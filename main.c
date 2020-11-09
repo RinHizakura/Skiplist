@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "linked-list.h"
 #include "skiplist.h"
 
 int main()
@@ -42,28 +43,50 @@ int main()
         "false", "false", "true"};
 
     Skiplist *obj;
+    node_t *head = NULL;
     for (int i = 0; i < 91; i++) {
         if (strcmp(cmd[i], "Skiplist") == 0) {
             obj = skiplistCreate();
+
+            /* do nothing for linked-list */
+
             if (strcmp(out[i], "null") != 0)
                 printf("error at cmd number %d\n", i);
+
         } else if (strcmp(cmd[i], "add") == 0) {
             skiplistAdd(obj, param[i]);
+
+            add_entry(&head, param[i]);
+
             if (strcmp(out[i], "null") != 0)
                 printf("error at cmd number %d\n", i);
+
         } else if (strcmp(cmd[i], "erase") == 0) {
             bool p = skiplistErase(obj, param[i]);
+            bool p2 = erase_entry(&head, param[i]);
+
             char *str = p ? "true" : "false";
             if (strcmp(str, out[i]) != 0)
+                printf("error at cmd number %d\n", i);
+
+            char *str2 = p2 ? "true" : "false";
+            if (strcmp(str2, out[i]) != 0)
                 printf("error at cmd number %d\n", i);
         } else if (strcmp(cmd[i], "search") == 0) {
             bool p = skiplistSearch(obj, param[i]);
+            bool p2 = find_entry(head, param[i]);
+
             char *str = p ? "true" : "false";
             if (strcmp(str, out[i]) != 0)
                 printf("error at cmd number %d\n", i);
+
+            char *str2 = p2 ? "true" : "false";
+            if (strcmp(str2, out[i]) != 0)
+                printf("error at cmd number %d\n", i);
         }
     }
+    printf("\n");
 
     skiplistFree(obj);
-    printf("\n");
+    return 0;
 }
